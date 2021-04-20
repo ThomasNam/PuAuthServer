@@ -28,24 +28,14 @@ bower_components
 .sass-cache
 asset
 npm-debug.log
-pg/src/main/webapp/dev
-manage/src/main/webapp/dist
 
 *.log
-web/src/main/webapp/api
 out-tsc
-backEnd/src/main/webapp/attach/*
 package-lock.json
-admin/src/main/webapp/dist
 application-red.yml
-homepage/src/main/webapp/dist
-homepage/src/main/webapp/api
-homepage/src/main/webapp/papi
-.sass-cache
-homepage/stat.json
 *.map
 .settings
 .project
 .classpath
-homepage/src/main/webapp/app/reseller/index.html
-homepage/src/main/webapp/app/seller/index.html
+
+src/main/resources/test.jks
