@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url 'https://repo.spring.io/plugins-release' }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}")
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+    }
+    ext {
+        snippetsDir = file('build/generated-snippets')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-idea'
+apply plugin: 'com.palantir.docker'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group 'com.ciderpay.auth'
+version '1.0-SNAPSHOT'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "http://repo.spring.io/snapshot" }
+    maven { url "http://repo.spring.io/milestone" }
+}
+
+dependencies {
+
+    compile 'org.apache.httpcomponents:httpclient'
+    compile 'org.apache.httpcomponents:httpmime'
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor("org.projectlombok:lombok")
+
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    compile("org.springframework.boot:spring-boot-devtools")
+    compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security.oauth:spring-security-oauth2")
+    compile("org.springframework.security:spring-security-jwt")
+
+    compile("com.fasterxml.jackson.core:jackson-core")
+    compile("com.fasterxml.jackson.core:jackson-databind")
+    compile("com.fasterxml.jackson.core:jackson-annotations")
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-codec:commons-codec'
+    runtime("mysql:mysql-connector-java")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+compileJava.dependsOn(processResources)
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+bootRun {
+    systemProperties System.properties
+}
+
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '2.9'
+//}
+
+task unpack(type: Copy) {
+    dependsOn jar
+    from(zipTree(tasks.jar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+    name "${project.group}/${jar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
+}
+
