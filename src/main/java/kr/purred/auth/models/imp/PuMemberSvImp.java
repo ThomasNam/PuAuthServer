@@ -39,10 +39,10 @@ public class PuMemberSvImp implements PuMemberSv
 			throw new IllegalArgumentException ();
 
 		// TODO 추후 밸리데이터로 이동시킨다.
-		if (StrLib.isExistStr (registerMemberData.getMemberID ()))
+		if (StrLib.isEmptyStr (registerMemberData.getMemberID ()))
 			throw new IllegalArgumentException ();
 
-		if (StrLib.isExistStr (registerMemberData.getPasswd ()))
+		if (StrLib.isEmptyStr (registerMemberData.getPasswd ()))
 			throw new IllegalArgumentException ();
 
 		PuMember member = new PuMember ();
@@ -50,6 +50,7 @@ public class PuMemberSvImp implements PuMemberSv
 		Util.myCopyProperties (registerMemberData, member);
 
 		member.setPasswd (BCrypt.hashpw (registerMemberData.getPasswd (), BCrypt.gensalt ()));
+		member.setActive (true);
 		member.getAuthorities ().add ("ROLE_USER");
 
 		if (StrLib.isExistStr (registerMemberData.getMemberType ()))

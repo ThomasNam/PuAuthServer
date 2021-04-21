@@ -7,10 +7,7 @@ import kr.purred.auth.lib.StrLib;
 import kr.purred.auth.models.PuMemberSv;
 import kr.purred.auth.models.data.RegisterMemberData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Member Controller
@@ -31,7 +28,7 @@ public class PuMemberController
 	private final PuAuthProperties authProperties;
 
 	@PostMapping("/")
-	public ApiResult postMember (RegisterMemberData memberData, @RequestHeader("globalToken") String globalToken) throws AuthException
+	public ApiResult postMember (@RequestBody RegisterMemberData memberData, @RequestHeader("globalToken") String globalToken) throws AuthException
 	{
 		// TODO 추후 인터셉터로 이동 시키자
 		if (StrLib.isEmptyStr (globalToken) || !globalToken.equals (authProperties.getGlobalToken ()))
