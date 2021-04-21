@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix = "ciderpay")
+@ConfigurationProperties(prefix = "auth")
 @Getter
 @Setter
 @ToString

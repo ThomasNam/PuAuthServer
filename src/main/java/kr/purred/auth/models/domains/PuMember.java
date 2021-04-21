@@ -3,19 +3,21 @@ package kr.purred.auth.models.domains;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "PU_MEMBER")
 @Getter
 @Setter
 @Accessors(chain = true)
-@Table(name = "PU_MEMBER")
+@ToString
 public class PuMember
 {
 	@Id

@@ -33,6 +33,7 @@ npm-debug.log
 out-tsc
 package-lock.json
 application-red.yml
+application-test.yml
 *.map
 .settings
 .project
